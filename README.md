@@ -116,7 +116,7 @@ print(result)
 
 ### Least Common Multiple (LCM)
 ```
-from your_package import least_common_multiple
+from mathsimplicity import least_common_multiple
 
 result = least_common_multiple(4, 5, 6)
 print(result)
