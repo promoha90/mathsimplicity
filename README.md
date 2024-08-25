@@ -4,6 +4,7 @@
 
 [MathSimplicity](mathsimplicity/mathsimplicity.py) is a Python package that provides various utilities for mathematical computations, including:
 
+- Arithmetic operations.
 - Prime factorization of numbers.
 - Generation of prime numbers within a specified range.
 - Conversion of fractions to decimals and vice versa.
