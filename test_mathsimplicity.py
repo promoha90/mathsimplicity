@@ -1,4 +1,46 @@
-from mathsimplicity import primes, fraction_to_decimal, decimal_to_fraction, primes_in_range, greatest_common_divisor, least_common_multiple
+from mathsimplicity import arithmetic_operations, primes, fraction_to_decimal, decimal_to_fraction, primes_in_range, greatest_common_divisor, least_common_multiple
+
+"""ARITHMETIC OPERATIONS CALCULATION"""
+
+def test_arithmetic_valid_operations_with_result_showing():
+    assert arithmetic_operations(['3 + 5', '10 - 2', '6 x 7', '8 ÷ 2'], True) == (
+        "   3       10       6       8\n"
+        "+  5    -   2    x  7    ÷  2\n"
+        "----    -----    ----    ----\n"
+        "   8        8      42       4"
+    )
+
+    assert arithmetic_operations(['   3 + 5   ', '10 - 2', '6 * 7', '8 / 2'], True) == (
+        "   3       10       6       8\n"
+        "+  5    -   2    x  7    ÷  2\n"
+        "----    -----    ----    ----\n"
+        "   8        8      42       4"
+    )
+
+def test_arithmetic_valid_operations_with_result_not_showing():
+    assert arithmetic_operations(['3 + 5', '10 - 2', '6 x 7', '8 ÷ 2']) == (
+        "   3       10       6       8\n"
+        "+  5    -   2    x  7    ÷  2\n"
+        "----    -----    ----    ----\n"
+        "THE RESULTS ARE HIDDEN. TO SHOW THEM, PLEASE INPUT 'True' AS THE SECOND ARGUMENT."
+    )
+
+def test_arithmetic_invalid_operations_list_mistake():
+    assert arithmetic_operations('3 + 5') == 'Error: The problems must be a list of strings -> List[str].'
+
+def test_arithmetic_invalid_operations_operator_mistake():
+    assert arithmetic_operations(['3 & 5']) == "Error: Operator must be '+', '-', ('x' '*'), or ('÷' '/')."
+    assert arithmetic_operations(['3 ^ 5']) == "Error: Operator must be '+', '-', ('x' '*'), or ('÷' '/')."
+
+def test_arithmetic_invalid_operations_number_mistake():
+    assert arithmetic_operations(['3 + a']) == "Error: Each problem must be a string in the format 'number operator number'."
+
+def test_arithmetic_invalid_operations_empty_list_mistake():
+    assert arithmetic_operations([], True) == 'List must cotain more than zero arguments!'
+
+def test_arithmetic_invalid_operations_zero_division_mistake():
+    assert arithmetic_operations(['5 ÷ 0']) == 'Ǝ'
+
 
 """PRIMES CALCULATION"""
 
@@ -36,7 +78,7 @@ def test_primes_invalid_input_with_valid_input():
     assert primes(-5, 'abc', 1, 2, 3, 4, 6, 9, 15) == expected
 
 def test_primes_empty():
-    assert primes() == "Please enter atleast one number to calculate its prime numbers"
+    assert primes() == "Please enter at least one number to calculate its prime numbers"
 
 def test_primes_large_prime():
     assert primes(541) == "The number 541 can be divided by the following prime numbers: 541"
@@ -121,7 +163,7 @@ def test_error_in_evaluation():
     assert fraction_to_decimal("1/0").startswith("Error evaluating '1/0':")
 
 def test_empty_evaluation():
-    assert fraction_to_decimal() == "Please enter atleast one number to fractionate"
+    assert fraction_to_decimal() == "Please enter at least one number to fractionate"
 
 
 """DECIMALS TO FRACTIONS"""
@@ -191,8 +233,8 @@ def test_least_common_multiple_with_negatives():
 
 def test_greatest_common_divisor_error_cases():
     assert greatest_common_divisor() == "Please provide at least one number."
-    assert greatest_common_divisor("12", 36) == "Invalid input. Please provide only integers."
+    assert greatest_common_divisor("12", 36) == "Invalid input. Please provide only integers or floats equivalent to integers."
 
 def test_least_common_multiple_error_cases():
     assert least_common_multiple() == "Please provide at least one number."
-    assert least_common_multiple("4", 5) == "Invalid input. Please provide only integers."
+    assert least_common_multiple("4", 5) == "Invalid input. Please provide only integers or floats equivalent to integers."

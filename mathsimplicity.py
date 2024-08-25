@@ -2,16 +2,109 @@ from collections import Counter
 from fractions import Fraction
 from functools import reduce
 from numexpr import evaluate
-from re import fullmatch
+from re import fullmatch, match as matching
 import math
 
 def main():
     pass
 
 
+def arithmetic_operations(problems, show_answers=False):
+    # Verify if the problems are a list of strings
+    if not isinstance(problems, list) or not all(isinstance(problem, str) for problem in problems):
+        return "Error: The problems must be a list of strings -> List[str]."
+
+    # Initialize lists to hold the components of each problem
+    first_numbers = []
+    operators = []
+    second_numbers = []
+
+    # Regex pattern to match problems with or without spaces
+    pattern = r'(\d+)\s*([+\-*x/÷])\s*(\d+)'
+    problem_counter = 0
+    # Parse and validate each problem
+    for problem in problems:
+        # Validate the operator
+        if '+' not in problem and '-' not in problem and 'x' not in problem and '*' not in problem and '/' not in problem and '÷' not in problem:
+            return "Error: Operator must be '+', '-', ('x' '*'), or ('÷' '/')."
+        
+        problem_counter += 1
+        problem = problem.strip()        
+        match = matching(pattern, problem.replace('*', 'x').replace('/', '÷'))
+        
+        if not match:
+            return "Error: Each problem must be a string in the format 'number operator number'."
+
+        first, operator, second = match.groups()
+        first_numbers.append(first)
+        operators.append(operator)
+        second_numbers.append(second)
+
+        # Validate that both operands are numeric
+        if not (first.isdigit() and second.isdigit()):
+            return "Error: Numbers must only contain digits."
+
+    # Prepare strings to hold each line of the arranged problems
+    first_line = ''
+    second_line = ''
+    dashes = ''
+    results = ''
+    spacing = ' ' * 4  # Standard spacing between problems
+
+    # Format each problem and assemble the lines
+    for i in range(len(problems)):
+        # Determine the width needed for each problem based on the longest number
+        max_length = max(len(first_numbers[i]), len(second_numbers[i]))
+        width = max_length + 3  # Additional space for the operator and a leading space
+
+        # Perform the arithmetic operation
+        if operators[i] == '+':
+            result = int(first_numbers[i]) + int(second_numbers[i])
+        elif operators[i] == '-':
+            result = int(first_numbers[i]) - int(second_numbers[i])
+        elif operators[i] == 'x':
+            result = int(first_numbers[i]) * int(second_numbers[i])
+        else:  # operators[i] == '÷'
+            try:
+                # Perform float division
+                result = float(first_numbers[i]) / float(second_numbers[i])
+                # Convert to int if there are no decimal places
+                if result.is_integer():
+                    result = int(result)
+                else:
+                    result = round(result, width)
+            except ZeroDivisionError:
+                return 'Ǝ'
+
+        result_str = str(result).rjust(width)
+
+        # Build the formatted lines
+        first_line += first_numbers[i].rjust(width)
+        second_line += operators[i] + second_numbers[i].rjust(width - 1)
+        dashes += '-' * width
+        results += result_str
+
+        # Add spacing between problems if it's not the last one
+        if i < len(problems) - 1:
+            first_line += spacing
+            second_line += spacing
+            dashes += spacing
+            results += spacing
+    if problem_counter == 0:
+        return "List must cotain more than zero arguments!"
+    # Return the arranged problems with or without the results based on show_answers
+    if show_answers:
+        return f"{first_line}\n{second_line}\n{dashes}\n{results}"
+    
+    return f"{first_line}\n{second_line}\n{dashes}\nTHE RESULTS ARE HIDDEN. TO SHOW THEM, PLEASE INPUT 'True' AS THE SECOND ARGUMENT."
+
+# Example usage:
+# print(mathsimplicity.arithmetic_arranger(["32+698", "3801-2", "45*43", "45 x 43" "123/49", "123 ÷ 49", ...], True))
+
+
 def primes(*args):
     if argument_count(*args) == 0:
-        return "Please enter atleast one number to calculate its prime numbers"
+        return "Please enter at least one number to calculate its prime numbers"
     
     def validate_arguments(args):
         """Validate the input arguments and return a list of valid numbers and error messages."""
@@ -77,6 +170,9 @@ def primes(*args):
 
     return prime_calculation(*args)
 
+# Example usage:
+# print(primes(12, 18, ...))
+
 
 def primes_in_range(start, end):
     """Generate a list of prime numbers in the range [start, end] using the Sieve of Eratosthenes."""
@@ -99,12 +195,18 @@ def primes_in_range(start, end):
     # Collect all prime numbers in the range [start, end]
     return [num for num in range(start, end + 1) if sieve[num]]
 
+# Example usage:
+# print(primes_in_range(2, 90))
 
 
 def fraction_to_decimal(*args):
-    if argument_count(*args) == 0:
-        return "Please enter atleast one number to fractionate"
+    if len(args) == 0:
+        return "Please enter at least one number to fractionate"
     
+    # Verifica que todos los argumentos sean cadenas de texto
+    if not all(isinstance(arg, str) for arg in args):
+        return "Error: All inputs must be strings."
+
     def is_valid_expression(expression):
         """Check if the input expression contains only valid characters for a fraction."""
         return bool(fullmatch(r'[0-9\s÷/()+\-]*', expression)) and any(char in expression for char in ['/', '÷'])
@@ -130,11 +232,18 @@ def fraction_to_decimal(*args):
     
     return "\n".join(results)
 
+# Example usage:
+# print(fraction_to_decimal("2÷8", "3/9", ...))
+
 
 def decimal_to_fraction(*args):
     if len(args) == 0:
         return "Please enter at least one number to convert to a fraction"
     
+    # Verifica que todos los argumentos sean cadenas de texto
+    if not all(isinstance(arg, str) for arg in args):
+        return "Error: All inputs must be strings."
+
     messages = []
     for argument in args:
         try:
@@ -152,16 +261,29 @@ def decimal_to_fraction(*args):
         
     return "\n".join(messages)
 
+# Example usage:
+# print(decimal_to_fraction(0.25, 0.3333, ...))
+
+
 def greatest_common_divisor(*args):
     """Calculate the Greatest Common Divisor (GCD) of multiple numbers."""
     if not args:
         return "Please provide at least one number."
 
+    # Validate that all numbers are integers or floats equivalent to integers
+    if not validate_integers(*args):
+        return "Invalid input. Please provide only integers or floats equivalent to integers."
+
+    # Convert all float arguments that are equivalent to integers to int
+    integers = [int(arg) for arg in args]
+
     def gcd(a, b):
+        """Calculate the GCD of two numbers."""
         return math.gcd(a, b)
 
     try:
-        result = reduce(gcd, args)
+        # Reduce the list of integers using the gcd function
+        result = reduce(gcd, integers)
         return f"The greatest common divisor of the provided numbers is: {result}"
     except TypeError:
         return "Invalid input. Please provide only integers."
@@ -171,19 +293,38 @@ def least_common_multiple(*args):
     if not args:
         return "Please provide at least one number."
 
+    # Validate that all numbers are integers or floats equivalent to integers
+    if not validate_integers(*args):
+        return "Invalid input. Please provide only integers or floats equivalent to integers."
+
+    # Convert all float arguments that are equivalent to integers to int
+    integers = [int(arg) for arg in args]
+
     def lcm(a, b):
+        """Calculate the LCM of two numbers."""
         return abs(a * b) // math.gcd(a, b)
 
     try:
-        result = reduce(lcm, args)
+        # Reduce the list of integers using the lcm function
+        result = reduce(lcm, integers)
         return f"The least common multiple of the provided numbers is: {result}"
     except TypeError:
         return "Invalid input. Please provide only integers."
 
+# Example usage:
+# print(greatest_common_divisor(40, 89, ...))
+# print(least_common_multiple(12, 15.0, ...))
+
 
 def argument_count(*args):
     return len(args)
- 
+
+def validate_integers(*args):
+    """Validate that all arguments are integers or floats equivalent to integers."""
+    for arg in args:
+        if not isinstance(arg, (int, float)) or not arg.is_integer():
+            return False
+    return True
 
 if __name__ == "__main__":
     main()

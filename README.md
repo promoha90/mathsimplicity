@@ -29,6 +29,28 @@ pip install mathsimplicity
 Here's a quick overview of how to use the functionalities provided by the package.
 ### Prime Factorization
 ```
+from mathsimplicity import arithmetic_operations
+
+result1 = arithmetic_operations(["7+9", "7-9", "9/6", "9÷6", "8*9", "8x9"])
+result2 = arithmetic_operations(["7+9", "7-9", "9/6", "9÷6", "8*9", "8x9"], True)
+
+print(result1)
+print(result2)
+```
+#### OUTPUT
+```
+   7       7       9       9       8       8
++  9    -  9    ÷  6    ÷  6    x  9    x  9
+----    ----    ----    ----    ----    ----
+THE RESULTS ARE HIDDEN. TO SHOW THEM, PLEASE INPUT 'True' AS THE SECOND ARGUMENT.
+   7       7       9       9       8       8
++  9    -  9    ÷  6    ÷  6    x  9    x  9
+----    ----    ----    ----    ----    ----
+  16      -2     1.5     1.5      72      72
+```
+
+### Prime Factorization
+```
 from mathsimplicity import primes
 
 result = primes(30, 56)
