@@ -28,7 +28,7 @@ pip install mathsimplicity
 
 ## Usage
 Here's a quick overview of how to use the functionalities provided by the package.
-### Prime Factorization
+### Arithmetic Operation
 ```
 from mathsimplicity import arithmetic_operations
 
