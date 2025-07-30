@@ -18,6 +18,15 @@ The main motivation behind [mathsimplicity](mathsimplicity/mathsimplicity.py) is
 - Support for New Programmers: Clear documentation and practical examples to facilitate learning.
 - Essential Mathematical Functions: Fundamental tools for solving common mathematical problems.
 
+## 📢 Behind the Project
+
+🔹 From Hello World to 11,600+ downloads on PyPI 🔹  
+I shared the full story of how this library came to life in a personal post. If you're curious about the journey and motivation behind mathsimplicity, feel free to check it out:
+
+👉 [Read the story on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7356304493904371712/)
+
+📊 Live stats: [mathsimplicity on pepy.tech](https://pepy.tech/projects/mathsimplicity)
+
 ## Installation
 
 You can install [`mathsimplicity`](mathsimplicity/mathsimplicity.py) via PyPI using pip. Simply run the following command:
