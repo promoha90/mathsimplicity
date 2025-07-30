@@ -20,7 +20,7 @@ The main motivation behind [mathsimplicity](mathsimplicity/mathsimplicity.py) is
 
 ## 📢 Behind the Project
 
-🔹 From Hello World to 11,600+ downloads on PyPI 🔹  
+🔹 From Hello World to [![PyPI Downloads](https://static.pepy.tech/badge/mathsimplicity)](https://pepy.tech/projects/mathsimplicity) downloads on PyPI 🔹  
 I shared the full story of how this library came to life in a personal post. If you're curious about the journey and motivation behind mathsimplicity, feel free to check it out:
 
 👉 [Read the story on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7356304493904371712/)
